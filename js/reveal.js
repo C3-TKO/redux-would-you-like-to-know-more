@@ -34,13 +34,16 @@
 		HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
 		UA = navigator.userAgent,
 
-		// Configuration defaults, can be overridden at initialization time
+	// Configuration defaults, can be overridden at initialization time
 		config = {
 
 			// The "normal" size of the presentation, aspect ratio will be preserved
 			// when the presentation is scaled to fit different resolutions
-			width: 960,
-			height: 700,
+			//width: 960,
+			//height: 700,
+
+			width: 1920,
+			height: 1080,
 
 			// Factor of the display size that should remain empty around the content
 			margin: 0.1,
@@ -161,69 +164,69 @@
 
 		},
 
-		// Flags if reveal.js is loaded (has dispatched the 'ready' event)
+	// Flags if reveal.js is loaded (has dispatched the 'ready' event)
 		loaded = false,
 
-		// Flags if the overview mode is currently active
+	// Flags if the overview mode is currently active
 		overview = false,
 
-		// Holds the dimensions of our overview slides, including margins
+	// Holds the dimensions of our overview slides, including margins
 		overviewSlideWidth = null,
 		overviewSlideHeight = null,
 
-		// The horizontal and vertical index of the currently active slide
+	// The horizontal and vertical index of the currently active slide
 		indexh,
 		indexv,
 
-		// The previous and current slide HTML elements
+	// The previous and current slide HTML elements
 		previousSlide,
 		currentSlide,
 
 		previousBackground,
 
-		// Slides may hold a data-state attribute which we pick up and apply
-		// as a class to the body. This list contains the combined state of
-		// all current slides.
+	// Slides may hold a data-state attribute which we pick up and apply
+	// as a class to the body. This list contains the combined state of
+	// all current slides.
 		state = [],
 
-		// The current scale of the presentation (see width/height config)
+	// The current scale of the presentation (see width/height config)
 		scale = 1,
 
-		// CSS transform that is currently applied to the slides container,
-		// split into two groups
+	// CSS transform that is currently applied to the slides container,
+	// split into two groups
 		slidesTransform = { layout: '', overview: '' },
 
-		// Cached references to DOM elements
+	// Cached references to DOM elements
 		dom = {},
 
-		// Features supported by the browser, see #checkCapabilities()
+	// Features supported by the browser, see #checkCapabilities()
 		features = {},
 
-		// Client is a mobile device, see #checkCapabilities()
+	// Client is a mobile device, see #checkCapabilities()
 		isMobileDevice,
 
-		// Client is a desktop Chrome, see #checkCapabilities()
+	// Client is a desktop Chrome, see #checkCapabilities()
 		isChrome,
 
-		// Throttles mouse wheel navigation
+	// Throttles mouse wheel navigation
 		lastMouseWheelStep = 0,
 
-		// Delays updates to the URL due to a Chrome thumbnailer bug
+	// Delays updates to the URL due to a Chrome thumbnailer bug
 		writeURLTimeout = 0,
 
-		// Flags if the interaction event listeners are bound
+	// Flags if the interaction event listeners are bound
 		eventsAreBound = false,
 
-		// The current auto-slide duration
+	// The current auto-slide duration
 		autoSlide = 0,
 
-		// Auto slide properties
+	// Auto slide properties
 		autoSlidePlayer,
 		autoSlideTimeout = 0,
 		autoSlideStartTime = -1,
 		autoSlidePaused = false,
 
-		// Holds information about the currently ongoing touch input
+	// Holds information about the currently ongoing touch input
 		touch = {
 			startX: 0,
 			startY: 0,
@@ -233,7 +236,7 @@
 			threshold: 40
 		},
 
-		// Holds information about the keyboard shortcuts
+	// Holds information about the keyboard shortcuts
 		keyboardShortcuts = {
 			'N  ,  SPACE':			'Next slide',
 			'P':					'Previous slide',
@@ -315,16 +318,16 @@
 		var testElement = document.createElement( 'div' );
 
 		features.transforms3d = 'WebkitPerspective' in testElement.style ||
-								'MozPerspective' in testElement.style ||
-								'msPerspective' in testElement.style ||
-								'OPerspective' in testElement.style ||
-								'perspective' in testElement.style;
+			'MozPerspective' in testElement.style ||
+			'msPerspective' in testElement.style ||
+			'OPerspective' in testElement.style ||
+			'perspective' in testElement.style;
 
 		features.transforms2d = 'WebkitTransform' in testElement.style ||
-								'MozTransform' in testElement.style ||
-								'msTransform' in testElement.style ||
-								'OTransform' in testElement.style ||
-								'transform' in testElement.style;
+			'MozTransform' in testElement.style ||
+			'msTransform' in testElement.style ||
+			'OTransform' in testElement.style ||
+			'transform' in testElement.style;
 
 		features.requestAnimationFrameMethod = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 		features.requestAnimationFrame = typeof features.requestAnimationFrameMethod === 'function';
@@ -339,17 +342,17 @@
 		// up slides. Zoom produces crisper results but has a lot of
 		// xbrowser quirks so we only use it in whitelsited browsers.
 		features.zoom = 'zoom' in testElement.style && !isMobileDevice &&
-						( isChrome || /Version\/[\d\.]+.*Safari/.test( UA ) );
+			( isChrome || /Version\/[\d\.]+.*Safari/.test( UA ) );
 
 	}
 
-    /**
-     * Loads the dependencies of reveal.js. Dependencies are
-     * defined via the configuration option 'dependencies'
-     * and will be loaded prior to starting/binding reveal.js.
-     * Some dependencies may have an 'async' flag, if so they
-     * will load after reveal.js has been started up.
-     */
+	/**
+	 * Loads the dependencies of reveal.js. Dependencies are
+	 * defined via the configuration option 'dependencies'
+	 * and will be loaded prior to starting/binding reveal.js.
+	 * Some dependencies may have an 'async' flag, if so they
+	 * will load after reveal.js has been started up.
+	 */
 	function load() {
 
 		var scripts = [],
@@ -807,14 +810,14 @@
 		// the same.
 		if( data.background || data.backgroundColor || data.backgroundImage || data.backgroundVideo || data.backgroundIframe ) {
 			element.setAttribute( 'data-background-hash', data.background +
-															data.backgroundSize +
-															data.backgroundImage +
-															data.backgroundVideo +
-															data.backgroundIframe +
-															data.backgroundColor +
-															data.backgroundRepeat +
-															data.backgroundPosition +
-															data.backgroundTransition );
+				data.backgroundSize +
+				data.backgroundImage +
+				data.backgroundVideo +
+				data.backgroundIframe +
+				data.backgroundColor +
+				data.backgroundRepeat +
+				data.backgroundPosition +
+				data.backgroundTransition );
 		}
 
 		// Additional and optional background properties
@@ -1494,12 +1497,12 @@
 
 		dom.overlay.innerHTML = [
 			'<header>',
-				'<a class="close" href="#"><span class="icon"></span></a>',
-				'<a class="external" href="'+ url +'" target="_blank"><span class="icon"></span></a>',
+			'<a class="close" href="#"><span class="icon"></span></a>',
+			'<a class="external" href="'+ url +'" target="_blank"><span class="icon"></span></a>',
 			'</header>',
 			'<div class="spinner"></div>',
 			'<div class="viewport">',
-				'<iframe src="'+ url +'"></iframe>',
+			'<iframe src="'+ url +'"></iframe>',
 			'</div>'
 		].join('');
 
@@ -1547,10 +1550,10 @@
 
 			dom.overlay.innerHTML = [
 				'<header>',
-					'<a class="close" href="#"><span class="icon"></span></a>',
+				'<a class="close" href="#"><span class="icon"></span></a>',
 				'</header>',
 				'<div class="viewport">',
-					'<div class="viewport-inner">'+ html +'</div>',
+				'<div class="viewport-inner">'+ html +'</div>',
 				'</div>'
 			].join('');
 
@@ -1999,10 +2002,10 @@
 
 		// Check which implementation is available
 		var requestMethod = element.requestFullscreen ||
-							element.webkitRequestFullscreen ||
-							element.webkitRequestFullScreen ||
-							element.mozRequestFullScreen ||
-							element.msRequestFullscreen;
+			element.webkitRequestFullscreen ||
+			element.webkitRequestFullScreen ||
+			element.mozRequestFullScreen ||
+			element.msRequestFullscreen;
 
 		if( requestMethod ) {
 			requestMethod.apply( element );
@@ -2627,8 +2630,8 @@
 
 		if( typeof b === 'number' && !isNaN( b ) ) {
 			return  '<span class="slide-number-a">'+ a +'</span>' +
-					'<span class="slide-number-delimiter">'+ delimiter +'</span>' +
-					'<span class="slide-number-b">'+ b +'</span>';
+				'<span class="slide-number-delimiter">'+ delimiter +'</span>' +
+				'<span class="slide-number-b">'+ b +'</span>';
 		}
 		else {
 			return '<span class="slide-number-a">'+ a +'</span>';
@@ -2646,10 +2649,10 @@
 
 		// Remove the 'enabled' class from all directions
 		dom.controlsLeft.concat( dom.controlsRight )
-						.concat( dom.controlsUp )
-						.concat( dom.controlsDown )
-						.concat( dom.controlsPrev )
-						.concat( dom.controlsNext ).forEach( function( node ) {
+			.concat( dom.controlsUp )
+			.concat( dom.controlsDown )
+			.concat( dom.controlsPrev )
+			.concat( dom.controlsNext ).forEach( function( node ) {
 			node.classList.remove( 'enabled' );
 			node.classList.remove( 'fragmented' );
 		} );
@@ -2949,11 +2952,11 @@
 				// Iframes
 				else if( backgroundIframe ) {
 					var iframe = document.createElement( 'iframe' );
-						iframe.setAttribute( 'src', backgroundIframe );
-						iframe.style.width  = '100%';
-						iframe.style.height = '100%';
-						iframe.style.maxHeight = '100%';
-						iframe.style.maxWidth = '100%';
+					iframe.setAttribute( 'src', backgroundIframe );
+					iframe.style.width  = '100%';
+					iframe.style.height = '100%';
+					iframe.style.maxHeight = '100%';
+					iframe.style.maxWidth = '100%';
 
 					background.appendChild( iframe );
 				}
@@ -4315,8 +4318,8 @@
 	function onPageVisibilityChange( event ) {
 
 		var isHidden =  document.webkitHidden ||
-						document.msHidden ||
-						document.hidden;
+			document.msHidden ||
+			document.hidden;
 
 		// If, after clicking a link or similar and we're coming back,
 		// focus the document.body to ensure we can use keyboard shortcuts

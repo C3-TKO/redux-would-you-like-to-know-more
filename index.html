@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Redux - Would you likt to know more?</title>
+		<title>Redux - Would you like to know more?</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/solarized.css">
@@ -27,8 +27,7 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>Redux</h2>
-					<h3>Would you like to know more?</h3>
+					<h1>Redux! Would you like to know more?</h1>
 					<p>&nbsp;</p>
 					<p>Thomas Kolar, Engineer @SilverTours GmbH</p>
 					<ul class="fa-ul">
@@ -38,18 +37,18 @@
 					</ul>
 				</section>
 				<section>
-					<h2>Overview</h2>
+					<h1>Overview</h1>
 					<ul>
 						<li class="fragment fade-up">Redux Tradeoffs</li>
 						<li class="fragment fade-up">Redux Benefits</li>
-						<li class="fragment fade-up">Plugins worth mentioning</li>
+						<li class="fragment fade-up">Middlewares</li>
 						<li class="fragment fade-up">Business Logic in Redux</li>
-						<li class="fragment fade-up">Summary</li>
+						<li class="fragment fade-up">Immutable.js</li>
 					</ul>
 				</section>
 
 				<section>
-					<h2>Redux Tradeoffs</h2>
+					<h1>Redux Tradeoffs</h1>
 					<ul>
 						<li class="fragment fade-up">Describe application state as plain objects and arrays.</li>
 						<li class="fragment fade-up">Describe changes in the system as plain objects.</li>
@@ -57,21 +56,72 @@
 					</ul>
 				</section>
 				<section>
-					<h2>Redux Benefits</h2>
+					<h1>Redux Benefits</h1>
 						<section>
-                            <p>Persist state to a local storage and then boot up from it, out of the box.</p>
+							<h2>Persistance Layer</h2>
+                            <p class="fragment fade-up">Persist state to a local storage and then boot up from it, out of the box.</p>
+							<div class="fragment fade-up" style="width: 50%; margin-left: auto; margin-right: auto;">
+								<a href="https://github.com/rt2zz/redux-persist"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;redux-persist</a>
+								<pre><code data-trim>
+import {persistStore, autoRehydrate} from 'redux-persist'
+const store = createStore(reducer, undefined, autoRehydrate())
+persistStore(store)
+								</code></pre>
+							</div>
+							<p class="fragment fade-up">
+								Comes with support for several storage engines like...<br /> <span class="fragment fade-up"><a href="http://facebook.github.io/react-native/docs/asyncstorage.html#content">AsyncStorage</a> for react-native ...</span><br/><span class="fragment fade-up">or <a href="https://github.com/localForage/localForage"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;localForage</a> for web apps.</span>
+							</p>
                         </section>
 						<section>
-							<p>Serialize user actions and attach them, together with a state snapshot, to automated bug reports, so that the product developers can replay them to reproduce the errors.</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<img class="plain stretch"  src="img/bugs.jpg" />
 						</section>
 						<section>
+							<h2>Reproduce Bugs Like A Boss</h2>
+							<p class="fragment fade-in">Serialize user actions and attach them, together with a state snapshot, to automated bug reports.</p>
+							<p class="fragment fade-in">Product developers can replay them to reproduce the errors.</p>
+							<div class="fragment fade-up" style="width: 75%; margin-left: auto; margin-right: auto;">
+								<a href="https://github.com/dtschust/redux-bug-reporter"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;redux-bug-reporter</a>
+								<pre><code data-trim>
+// ES6
+import { storeEnhancer } from 'redux-bug-reporter'
+// ES5
+var storeEnhancer = require('redux-bug-reporter').storeEnhancer
+
+function configureStore(initialState) {
+	const store = createStore(reducer, initialState, compose(
+		process.env.NODE_ENV !== 'production' ? storeEnhancer : f => f,
+		applyMiddleware(...middleware)
+	));
+
+	return store;
+}							</code></pre>
+							</div>
+							<div class="fragment fade-in" style="position: absolute; bottom: 0px; margin-left: auto; margin-right: auto; left: 0; right: 0;">
+								<img class="plain" height="20%" width="20%" src="svg/neutral-feel-like-a-sir-clean.svg" />
+							</div>
+						</section>
+						<section>
+							<h2>Prepopulate state on server</h2>
+							<p class="fragment fade-in">Pre-fill your state on the server.</p>
+							<p class="fragment fade-in">Send the state over the network and boot from it.</p>
+							<a class="fragment fade-in" href="http://redux.js.org/docs/recipes/ServerRendering.html">Server Rendering in Redux</a>
+						</section>
+						<section>
+							<h2>Collaborative Environments</h2>
 							<p>Pass action objects over the network to implement collaborative environments without dramatic changes to how the code is written.</p>
 						</section>
 						<section>
-							<p>Maintain an undo history or implement optimistic mutations without dramatic changes to how the code is written.</p>
+							<p>Travel between the state history in development, and re-evaluate the current state from the action history when the code changes, a la TDD.</p>
 						</section>
 						<section>
-							<p>Travel between the state history in development, and re-evaluate the current state from the action history when the code changes, a la TDD.</p>
+							<h2>Collaborative Environments & Debugging</h2>
+							<p>Live Demo</p>
+						</section>
+						<section>
+							<h2>Undo / Redo</h2>
+							<p>Maintain an undo history or implement optimistic mutations without dramatic changes to how the code is written.</p>
 						</section>
 				</section>
 				<section>

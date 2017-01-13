@@ -42,7 +42,11 @@
 						<li class="fragment fade-up">Redux Tradeoffs</li>
 						<li class="fragment fade-up">Redux Benefits</li>
 						<li class="fragment fade-up">Middlewares</li>
-						<li class="fragment fade-up">Business Logic in Redux</li>
+
+						<li class="fragment fade-up">
+							<span style="text-decoration: line-through; color: red;">
+                                <span style="color: #586e75">Thunks & Sagas</span>
+                            </span>&nbsp;(Possible Future Talk)</li>
 						<li class="fragment fade-up">Immutable.js</li>
 					</ul>
 				</section>
@@ -62,7 +66,7 @@
                             <p class="fragment fade-up">Persist state to a local storage and then boot up from it, out of the box.</p>
 							<div class="fragment fade-up" style="width: 50%; margin-left: auto; margin-right: auto;">
 								<a href="https://github.com/rt2zz/redux-persist"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;redux-persist</a>
-								<pre><code data-trim>
+								<pre><code>
 import {persistStore, autoRehydrate} from 'redux-persist'
 const store = createStore(reducer, undefined, autoRehydrate())
 persistStore(store)
@@ -83,7 +87,7 @@ persistStore(store)
 							<p class="fragment fade-in">Product developers can replay them to reproduce the errors.</p>
 							<div class="fragment fade-up" style="width: 75%; margin-left: auto; margin-right: auto;">
 								<a href="https://github.com/dtschust/redux-bug-reporter"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;redux-bug-reporter</a>
-								<pre><code data-trim>
+								<pre><code>
 // ES6
 import { storeEnhancer } from 'redux-bug-reporter'
 // ES5
@@ -118,6 +122,8 @@ function configureStore(initialState) {
 							<h2>Debugging</h2>
 							<p class="fragment fade-in">Travel between the state history in development</p>
 							<p class="fragment fade-in">Re-evaluate the current state from the action history when the code changes, a la TDD.</p>
+							<a class="fragment fade-in" href="https://github.com/gaearon/redux-devtools"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;redux-devtools</a>
+
 						</section>
 						<section>
 							<p>&nbsp;</p>
@@ -134,14 +140,48 @@ function configureStore(initialState) {
 						</section>
 				</section>
 				<section>
-					<h2>Plugins worth mentioning</h2>
-					<section>Dev Tools</section>
-					<section>Immutable</section>
+					<h2>Middlewares</h2>
+					<img class="plain" height="60%" width="60%" src="img/middleware.gif" />
 				</section>
+				<!--
                 <section>
                     <h2>Business Logic in Redux</h2>
                     <section><a href="https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1#.plvsl82hn">https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1#.plvsl82hn</a></section>
-                </section>
+                </section
+                -->
+				<section>
+					<h1>Immutables</h1>
+						<p class="fragment fade-in">Immutable data cannot be changed once created</p>
+						<div class="fragment fade-up" style="width: 50%; margin-left: auto; margin-right: auto;">
+							<pre><code>
+var Immutable = require('immutable');
+var map1 = Immutable.Map({a:1, b:2, c:3});
+var map2 = map1.set('b', 50);
+map1.get('b'); // 2
+map2.get('b'); // 50
+							</code></pre>
+						</div>
+						<p class="fragment fade-in">No more defensive copying!</p>
+					<div class="fragment fade-up" style="width: 50%; margin-left: auto; margin-right: auto;">
+						<pre><code>
+let nextState = [...state];
+// Bye, bye mutable states in reducers!
+						</code></pre>
+					</div>
+					<p class="fragment fade-in">Advanced Data Structures including: List, Stack, Map, OrderedMap, Set, OrderedSet and Record.</p>
+					<p class="fragment fade-in">Object comparison</p>
+					<div class="fragment fade-up" style="width: 50%; margin-left: auto; margin-right: auto;">
+						<pre><code>
+var map1 = Immutable.Map({a:1, b:2, c:3});
+var map2 = map1.set('b', 2);
+assert(map1.equals(map2) === true);
+var map3 = map1.set('b', 50);
+assert(map1.equals(map3) === false);
+						</code></pre>
+					</div>
+
+					<a class="fragment fade-in" href="https://facebook.github.io/immutable-js/"><i class="fa fa-github" aria-hidden="true"></i>&nbsp;immutable.js</a>
+				</section>
 			</div>
 		</div>
 
